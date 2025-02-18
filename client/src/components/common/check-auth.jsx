@@ -14,6 +14,15 @@ function CheckAuth({ isAuthenticated, user, children }) {
     if (isAuthenticated && location.pathname === "/shop/checkout") {
         return <>{children}</>;
     }
+    if (isAuthenticated && location.pathname === "/shop/paypal-return") {
+        return <>{children}</>;
+    }
+    if (isAuthenticated && location.pathname === "/shop/payment-success") {
+        return <>{children}</>;
+    }
+    if (isAuthenticated && location.pathname === "/shop/account") {
+        return <>{children}</>;
+    }
 
     if (!isAuthenticated && !["/login", "/register"].some(path => location.pathname.includes(path))) {
         return <Navigate to="/auth/login" />;

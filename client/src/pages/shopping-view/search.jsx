@@ -23,9 +23,7 @@ function SearchProducts() {
   const { user } = useSelector((state) => state.auth);
 
   const { cartItems } = useSelector((state) => state.shopCart);
-  useEffect(()=>{
-    console.log("carts",cartItems)
-  })
+
   const { toast } = useToast();
   useEffect(() => {
     if (keyword && keyword.trim() !== "" && keyword.trim().length > 3) {
@@ -39,8 +37,7 @@ function SearchProducts() {
     }
   }, [keyword]);
 
-  function handleAddtoCart(getCurrentProductId, getTotalStock) {
-    // console.log(cartItems);
+  function handleAddToCart(getCurrentProductId, getTotalStock) {
     let getCartItems = cartItems.items || [];
 
     if (getCartItems.length) {
@@ -58,23 +55,42 @@ function SearchProducts() {
           return;
         }
       }
+    } if (user?.id) {
+      // Authenticated user
+      
+      dispatch(
+        addToCart({
+          userId: user?.id,
+          productId: getCurrentProductId,
+          quantity: 1,
+        })
+      ).then((data) => {
+  
+        if (data?.payload.data) {
+          
+  dispatch(fetchCartItems(user.id));
+  toast({
+    title: "Product is added to cart",
+  });
+}    
+      });
+    } else {
+      // Guest user
+      dispatch(
+        addToCart({
+          productId: getCurrentProductId,
+          quantity: 1,
+        })
+      ).then((data) => {
+        if (data?.payload?.data) {
+          dispatch(fetchCartItems(null));
+          toast({
+            title: "Product is added to cart",
+          });
+        }
+      });
     }
-
-    dispatch(
-      addToCart({
-        userId: user?.id,
-        productId: getCurrentProductId,
-        quantity: 1,
-      })
-    ).then((data) => {
-      if (data?.payload?.success) {
-        dispatch(fetchCartItems(user?.id));
-        toast({
-          title: "Product is added to cart",
-        });
-      }
-    });
-  }
+    };
 
   function handleGetProductDetails(getCurrentProductId) {
     // console.log(getCurrentProductId);
@@ -106,9 +122,9 @@ function SearchProducts() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
         {searchResults.map((item) => (
           <ShoppingProductTile
-            handleAddtoCart={handleAddtoCart}
             product={item}
             handleGetProductDetails={handleGetProductDetails}
+            handleAddtoCart={() => handleAddToCart(item._id,item.totalStock)} 
           />
         ))}
       </div>

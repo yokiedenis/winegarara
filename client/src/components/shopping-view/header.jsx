@@ -83,7 +83,7 @@ function HeaderRightContent({ closeSheet }) {
   }
 
   useEffect(() => {
-    console.log("usertest", user?.id);
+    // console.log("usertest", user?.id);
 
     if (!user?.id) {
       let guestCart = sessionStorage.getItem("guestCart");
@@ -93,10 +93,10 @@ function HeaderRightContent({ closeSheet }) {
         
         sessionStorage.setItem("guestCart", JSON.stringify([]));
       }
-      console.log("usertest2", user?.id);
+      // console.log("usertest2", user?.id);
       dispatch(fetchCartItems(null));
     } else {
-      console.log("usertest2", user?.id);
+      // console.log("usertest2", user?.id);
       dispatch(fetchCartItems(user.id));
     }
   }, [user, dispatch]);
@@ -127,7 +127,7 @@ function HeaderRightContent({ closeSheet }) {
           }
         />
       </Sheet>
-
+      {user ? (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Avatar className="bg-black cursor-pointer">
@@ -155,6 +155,11 @@ function HeaderRightContent({ closeSheet }) {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+       ) : (
+        <Button onClick={() => navigate("/auth/login")} variant="outline">
+          Login
+        </Button>
+      )}
     </div>
   );
 }

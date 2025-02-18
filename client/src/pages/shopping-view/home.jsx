@@ -891,7 +891,7 @@ function ShoppingHome() {
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
 
   const { user } = useSelector((state) => state.auth);
-
+  const { cartItems } = useSelector((state) => state.shopCart);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -910,22 +910,41 @@ function ShoppingHome() {
     dispatch(fetchProductDetails(getCurrentProductId));
   }
 
-  function handleAddtoCart(getCurrentProductId) {
-    
-    if (user?.id) {
+  function handleAddToCart(getCurrentProductId, getTotalStock) {
+    let getCartItems = cartItems.items || [];
+
+    if (getCartItems.length) {
+      const indexOfCurrentItem = getCartItems.findIndex(
+        (item) => item.productId === getCurrentProductId
+      );
+      if (indexOfCurrentItem > -1) {
+        const getQuantity = getCartItems[indexOfCurrentItem].quantity;
+        if (getQuantity + 1 > getTotalStock) {
+          toast({
+            title: `Only ${getQuantity} quantity can be added for this item`,
+            variant: "destructive",
+          });
+
+          return;
+        }
+      }
+    } if (user?.id) {
       // Authenticated user
       
       dispatch(
         addToCart({
-          userId: user?.id,
+
           productId: getCurrentProductId,
           quantity: 1,
         })
       ).then((data) => {
   
         if (data?.payload.data) {
-          console.log("dataric",data?.payload.data)
+          
   dispatch(fetchCartItems(user.id));
+  toast({
+    title: "Product is added to cart",
+  });
 }    
       });
     } else {
@@ -936,10 +955,7 @@ function ShoppingHome() {
           quantity: 1,
         })
       ).then((data) => {
-       
         if (data?.payload?.data) {
-          console.log("flo",data?.payload?.data)
-          // console.log(user.id)
           dispatch(fetchCartItems(null));
           toast({
             title: "Product is added to cart",
@@ -947,7 +963,7 @@ function ShoppingHome() {
         }
       });
     }
-  }
+    };
   useEffect(() => {
     if (productDetails !== null) setOpenDetailsDialog(true);
   }, [productDetails]);
@@ -1070,7 +1086,7 @@ function ShoppingHome() {
                   <ShoppingProductTile
                     handleGetProductDetails={handleGetProductDetails}
                     product={productItem}
-                    handleAddtoCart={() => handleAddtoCart(productItem._id)} 
+                    handleAddtoCart={() => handleAddToCart(productItem._id,productItem.totalStock)} 
                   />
                 ))
               : null}

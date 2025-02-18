@@ -9,7 +9,7 @@ const express = require("express");
 //register
 const registerUser = async (req, res) => {
   const { userName, email, password } = req.body;
-
+  // console.log("req.bodyreg",req.body)
   try {
     const checkUser = await User.findOne({ email });
     if (checkUser)
@@ -26,15 +26,34 @@ const registerUser = async (req, res) => {
     });
 
     await newUser.save();
+    const token = jwt.sign(
+      {
+        id: newUser._id,
+        role: newUser.role,
+        email: newUser.email,
+        userName: newUser.userName,
+      },
+      process.env.SECRET_KEY,
+      { expiresIn: "60m" }
+    );
+
+    // Return the token and user details in the response
     res.status(200).json({
       success: true,
       message: "Registration successful",
+      token, // Include the token in the response
+      user: {
+        email: newUser.email,
+        role: newUser.role,
+        id: newUser._id,
+        userName: newUser.userName,
+      },
     });
   } catch (e) {
     console.log(e);
     res.status(500).json({
       success: false,
-      message: "Some error occured",
+      message: "Some error occurred",
     });
   }
 };
@@ -42,7 +61,7 @@ const registerUser = async (req, res) => {
 //login
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
-
+// console.log("req.body",req.body)
   try {
     const checkUser = await User.findOne({ email });
     if (!checkUser)

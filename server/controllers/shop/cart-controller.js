@@ -4,7 +4,7 @@ const Product = require("../../models/Product");
 const verifyExistence = async (req, res) => {
   try {
     const { productId } = req.params;
-    console.log("veri",req.params)//inspect
+    // console.log("veri",req.params)//inspect
     const product = await Product.findById(productId);
     if (!product)
       return res.status(409).json({
@@ -64,6 +64,7 @@ const addToCart = async (req, res) => {
     }
 
     await cart.save();
+    // console.log(" cart",cart)
     res.status(200).json({
       success: true,
       data: cart,
@@ -133,7 +134,7 @@ const fetchCartItems = async (req, res) => {
 const updateCartItemQty = async (req, res) => {
   try {
     const { userId, productId, quantity } = req.body;
-
+    // console.log("req.body",req.params)
     if (!userId || !productId || quantity <= 0) {
       return res.status(400).json({
         success: false,
@@ -176,7 +177,7 @@ const updateCartItemQty = async (req, res) => {
       salePrice: item.productId ? item.productId.salePrice : null,
       quantity: item.quantity,
     }));
-
+    // console.log("qaebac",populateCartItems)
     res.status(200).json({
       success: true,
       data:populateCartItems,
@@ -194,7 +195,7 @@ const updateCartItemQty = async (req, res) => {
 const deleteCartItem = async (req, res) => {
   try {
     const { userId, productId } = req.params;
-    console.log("rew",req.params)
+
     if (!userId || !productId) {
       return res.status(400).json({
         success: false,
@@ -233,7 +234,7 @@ const deleteCartItem = async (req, res) => {
       salePrice: item.productId ? item.productId.salePrice : null,
       quantity: item.quantity,
     }));
-    console.log("debac",populateCartItems)
+
     res.status(200).json({
       success: true,
       data:populateCartItems,

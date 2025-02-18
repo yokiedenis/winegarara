@@ -51,6 +51,7 @@ function UserCartItemsContent({ cartItem }) {
             : getCartItem?.quantity - 1,
       })
     ).then((data) => {
+      // console.log("Cart item is updated", data.payload);
       if (data?.payload?.success) {
         toast({
           title: "Cart item is updated successfully",
@@ -60,12 +61,9 @@ function UserCartItemsContent({ cartItem }) {
   }
 
   function handleCartItemDelete(getCartItem) {
-
     dispatch(
       deleteCartItem({ userId: user?.id, productId: getCartItem?.productId })
     ).then((data) => {
-      console.log("dilete",data.payload);
-      
       if (data?.payload?.data) {
         toast({
           title: "Cart item is deleted successfully",
@@ -74,9 +72,9 @@ function UserCartItemsContent({ cartItem }) {
     });
   }
   const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'UGX', // Change this to your desired currency code
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "UGX", // Change this to your desired currency code
       minimumFractionDigits: 0,
     }).format(amount);
   };
@@ -116,7 +114,7 @@ function UserCartItemsContent({ cartItem }) {
         <p className="font-semibold">
           {formatCurrency(
             (cartItem?.salePrice > 0 ? cartItem?.salePrice : cartItem?.price) *
-            cartItem?.quantity
+              cartItem?.quantity
           )}
         </p>
         <Trash

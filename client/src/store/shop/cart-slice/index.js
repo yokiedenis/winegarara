@@ -12,10 +12,10 @@ export const addToCart = createAsyncThunk(
   async ({ productId, quantity }, { rejectWithValue, getState }) => {
     const state = getState();
     const isGuest = !state.auth.user;
+    // console.log("auth.user:", state.auth.user);
     if (isGuest) {
       try {
         // Verify product exists
-        console.log("inside guest add");
         const productRes = await axios.get(
           `${
             import.meta.env.VITE_API_URL
@@ -46,14 +46,17 @@ export const addToCart = createAsyncThunk(
         }
 
         sessionStorage.setItem("guestCart", JSON.stringify(guestCart));
-  
-        const newguestcart={items:[...guestCart]}
+
+        const newguestcart = { items: [...guestCart] };
+        // console.log("newguestcart",newguestcart)
         return { data: newguestcart };
       } catch (error) {
         return rejectWithValue("Product not found");
       }
     } else {
       // Existing API call for logged-in users
+      const token = sessionStorage.getItem("token");
+      // console.log("token",token)
       try {
         const response = await axios.post(
           `${import.meta.env.VITE_API_URL}/api/shop/cart/add`,
@@ -61,9 +64,13 @@ export const addToCart = createAsyncThunk(
             userId: state.auth.user.id,
             productId,
             quantity,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           }
         );
-        
 
         return { data: response.data.data }; // Ensure this returns { data: cartItems }
       } catch (error) {
@@ -77,7 +84,7 @@ export const fetchCartItems = createAsyncThunk(
   async (userId, { rejectWithValue, getState }) => {
     const state = getState();
     const isGuest = !state.auth.user;
-  
+
     if (isGuest) {
       try {
         const guestCart = JSON.parse(
@@ -85,7 +92,7 @@ export const fetchCartItems = createAsyncThunk(
         );
 
         // Filter out invalid products and update sessionStorage
-        const newguestcart={items:[...guestCart]}
+        const newguestcart = { items: [...guestCart] };
         return { data: newguestcart };
       } catch (error) {
         return rejectWithValue("Error fetching cart");
@@ -94,13 +101,11 @@ export const fetchCartItems = createAsyncThunk(
       // Existing API call for logged-in users
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/shop/cart/get/${
-            userId
-          }`
+          `${import.meta.env.VITE_API_URL}/api/shop/cart/get/${userId}`
         );
-        const newresponse={items:[...response.data.data]}
+        const newresponse = { items: [...response.data.data] };
 
-        return { data: newresponse}; // Ensure this returns { data: cartItems, userId }
+        return { data: newresponse }; // Ensure this returns { data: cartItems, userId }
       } catch (error) {
         return rejectWithValue(error.response?.data || "An error occurred");
       }
@@ -110,40 +115,40 @@ export const fetchCartItems = createAsyncThunk(
 
 export const deleteCartItem = createAsyncThunk(
   "cart/deleteCartItem",
-  
-  async ({productId,userId},{rejectWithValue, getState }) => {
+
+  async ({ productId, userId }, { rejectWithValue, getState }) => {
     const state = getState();
     const isGuest = !state.auth.user;
-    
-    console.log("deleteitecalled with userId:", productId,userId);
+
     if (isGuest) {
       const guestCart = JSON.parse(sessionStorage.getItem("guestCart") || "[]");
       const updatedCart = guestCart.filter(
         (item) => item.productId !== productId
       );
       sessionStorage.setItem("guestCart", JSON.stringify(updatedCart));
-      const newAfterDeleteCart={items:[...updatedCart]}
-        return { data: newAfterDeleteCart };
+      const newAfterDeleteCart = { items: [...updatedCart] };
+      return { data: newAfterDeleteCart };
     } else {
-     try{
-        console.log("inside delete", userId,productId);
+      try {
         const response = await axios.delete(
-          `${import.meta.env.VITE_API_URL}/api/shop/cart/delete/${userId}/${productId}`
+          `${
+            import.meta.env.VITE_API_URL
+          }/api/shop/cart/delete/${userId}/${productId}`
         );
 
-const newresponse={items:[...response.data.data]}
+        const newresponse = { items: [...response.data.data] };
 
-return { data: newresponse}; 
-     } catch (error) {
-      return rejectWithValue(error.response?.data || "failed to delete");
-    }
+        return { data: newresponse };
+      } catch (error) {
+        return rejectWithValue(error.response?.data || "failed to delete");
+      }
     }
   }
 );
 
 export const updateCartQuantity = createAsyncThunk(
   "cart/updateCartQuantity",
-  async ({ productId, quantity }, { rejectWithValue, getState }) => {
+  async ({ userId, productId, quantity }, { rejectWithValue, getState }) => {
     const state = getState();
     const isGuest = !state.auth.user;
 
@@ -157,9 +162,10 @@ export const updateCartQuantity = createAsyncThunk(
 
       guestCart[itemIndex].quantity = quantity;
       sessionStorage.setItem("guestCart", JSON.stringify(guestCart));
-      return { data: guestCart, userId: null };
+      const newAfterQty = { items: [...guestCart] };
+      return { data: newAfterQty };
     } else {
-      async ({ userId, productId, quantity }) => {
+      try {
         const response = await axios.put(
           `${import.meta.env.VITE_API_URL}/api/shop/cart/update-cart`,
           {
@@ -168,9 +174,14 @@ export const updateCartQuantity = createAsyncThunk(
             quantity,
           }
         );
-        console.log("autofetc",response.data)
-        return { data: response.data.data, userId: state.auth.user.id };
-      };
+        // saver
+        // console.log("autofetc", response.data);
+        const newresponse = { items: [...response.data.data] };
+
+        return { data: newresponse };
+      } catch (error) {
+        return rejectWithValue(error.response?.data || "failed to delete");
+      }
     }
   }
 );
@@ -193,6 +204,7 @@ const shoppingCartSlice = createSlice({
         state.isLoading = false;
         state.cartItems = action.payload.data;
         state.isGuestCart = !action.payload.userId;
+        // console.log("fupdateCartQuantity:", action.payload.data);
       })
       .addCase(addToCart.rejected, (state) => {
         state.isLoading = false;
@@ -204,7 +216,7 @@ const shoppingCartSlice = createSlice({
       .addCase(fetchCartItems.fulfilled, (state, action) => {
         state.isLoading = false;
         state.cartItems = action.payload.data;
-        console.log("fetchCartItems fulfilled:", action.payload.data);
+
         state.isGuestCart = !action.payload.userId;
       })
       .addCase(fetchCartItems.rejected, (state) => {
@@ -217,6 +229,7 @@ const shoppingCartSlice = createSlice({
       .addCase(updateCartQuantity.fulfilled, (state, action) => {
         state.isLoading = false;
         state.cartItems = action.payload.data;
+ 
       })
       .addCase(updateCartQuantity.rejected, (state) => {
         state.isLoading = false;
@@ -228,7 +241,6 @@ const shoppingCartSlice = createSlice({
       .addCase(deleteCartItem.fulfilled, (state, action) => {
         state.isLoading = false;
         state.cartItems = action.payload.data;
-        console.log("deletfullfu",action.payload.data)
       })
       .addCase(deleteCartItem.rejected, (state) => {
         state.isLoading = false;

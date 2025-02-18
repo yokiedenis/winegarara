@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { addToCart } from "../shop/cart-slice";
 
 const initialState = {
   isAuthenticated: false,
@@ -19,17 +20,20 @@ export const registerUser = createAsyncThunk(
         withCredentials: true,
       }
     );
+    dispatch(authSlice.actions.setUser(response.data.user));
+    const token = response.data.token;
+    sessionStorage.setItem("token", token); // Add this line 
 
     // Merge guest cart after successful registration
     const guestCart = JSON.parse(sessionStorage.getItem("guestCart") || "[]");
     if (guestCart.length > 0) {
-      await Promise.all(
-        guestCart.map((item) =>
-          dispatch(
-            addToCart({ productId: item.productId, quantity: item.quantity })
-          )
-        )
-      );
+      for (const item of guestCart) {
+        await dispatch(
+          addToCart({ productId: item.productId, quantity: item.quantity })
+        ).catch((error) => {
+          console.error("Error merging cart:", error);
+        });
+      }
       sessionStorage.removeItem("guestCart");
     }
 
@@ -47,14 +51,19 @@ export const loginUser = createAsyncThunk(
         withCredentials: true,
       }
     );
+    const token = response.data.token;
+    sessionStorage.setItem("token", token); // Add this line
+    dispatch(authSlice.actions.setUser(response.data.user));
+  
 
     // Merge guest cart after successful login
     const guestCart = JSON.parse(sessionStorage.getItem("guestCart") || "[]");
+    // console.log("inside logim",guestCart)
     if (guestCart.length > 0) {
       await Promise.all(
         guestCart.map((item) =>
           dispatch(
-            addToCart({ productId: item.productId, quantity: item.quantity })
+            addToCart({ productId: item.productId, quantity: item.quantity  })
           )
         )
       );
@@ -124,7 +133,11 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setUser: (state, action) => {},
+    setUser: (state, action) => {
+      state.user = action.payload;
+    state.isAuthenticated = !!action.payload;
+    state.token = action.payload?.token; 
+    },
     resetTokenAndCredentials: (state) => {
       state.isAuthenticated = false;
       state.user = null;
@@ -138,8 +151,10 @@ const authSlice = createSlice({
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user = null;
-        state.isAuthenticated = false;
+        state.user = action.payload.success ? action.payload.user : null;
+        state.isAuthenticated = action.payload.success;
+        state.token = action.payload.token;
+        sessionStorage.setItem("token", action.payload.token); 
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -155,7 +170,7 @@ const authSlice = createSlice({
         state.user = action.payload.success ? action.payload.user : null;
         state.isAuthenticated = action.payload.success;
         state.token = action.payload.token;
-        sessionStorage.setItem("token", JSON.stringify(action.payload.token));
+        sessionStorage.setItem("token", action.payload.token); 
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;

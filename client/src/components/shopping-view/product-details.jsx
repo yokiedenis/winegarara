@@ -56,22 +56,42 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
           return;
         }
       }
+    } if (user?.id) {
+      // Authenticated user
+      
+      dispatch(
+        addToCart({
+          userId: user?.id,
+          productId: getCurrentProductId,
+          quantity: 1,
+        })
+      ).then((data) => {
+  
+        if (data?.payload.data) {
+          
+  dispatch(fetchCartItems(user.id));
+  toast({
+    title: "Product is added to cart",
+  });
+}    
+      });
+    } else {
+      // Guest user
+      dispatch(
+        addToCart({
+          productId: getCurrentProductId,
+          quantity: 1,
+        })
+      ).then((data) => {
+        if (data?.payload?.data) {
+          dispatch(fetchCartItems(null));
+          toast({
+            title: "Product is added to cart",
+          });
+        }
+      });
     }
-    dispatch(
-      addToCart({
-        userId: user?.id,
-        productId: getCurrentProductId,
-        quantity: 1,
-      })
-    ).then((data) => {
-      if (data?.payload?.success) {
-        dispatch(fetchCartItems(user?.id));
-        toast({
-          title: "Product is added to cart",
-        });
-      }
-    });
-  }
+    };
 
   function handleDialogClose() {
     setOpen(false);
