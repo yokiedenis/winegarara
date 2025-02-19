@@ -110,7 +110,16 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
         reviewValue: rating,
       })
     ).then((data) => {
-      // console.log(data.error.message.includes("400"))
+      if (data.payload.success) {
+        setRating(0);
+        setReviewMsg("");
+        dispatch(getReviews(productDetails?._id));
+        toast({
+          title: "Review added successfully!",
+        });
+        return;
+      }
+      console.log(data.error.message.includes("400"))
       if (data.error.message.includes("400")) { 
         toast({
           title: "You already reviewed this product!",
@@ -125,14 +134,7 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
         });
         return; 
       }
-      if (data.payload.success) {
-        setRating(0);
-        setReviewMsg("");
-        dispatch(getReviews(productDetails?._id));
-        toast({
-          title: "Review added successfully!",
-        });
-      }
+     
     });
   }
 
