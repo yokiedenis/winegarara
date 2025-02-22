@@ -6,6 +6,7 @@ import {
   ChevronRightIcon,
   Grape,
   Wine,
+  CupSoda,
   Martini,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -858,13 +859,28 @@ const Whiskeyicon = () => (
     </g>
   </svg>
 );
-
+const grapeicon = () => ( 
+  "🍇🌱"
+    );
+    const wineicon = () => ( 
+ "🍷🚚"
+       );
+       const martiniicon = () => ( 
+        "🥃🍸"
+              );   
+              
+        const twobeericon = () => ( 
+                "🍻🍺"
+                      );
+                      const ugaicon = () => ( 
+                        "🍉🧊"
+                              );
 // Define other icons similarly...
 const categoriesWithIcon = [
   { id: "Sweet Wine", label: "Sweet Wine", icon: sweetwineicon },
   { id: "Dry Wine", label: "Dry Wine", icon: drywineicon },
   { id: "Sparkling", label: "Sparkling", icon: champagneicon },
-  { id: "Non-Alcoholic", label: "Non-Alcoholic", icon: noalcoholicon },
+  { id: "Non-Alcoholic", label: "Non-Alcoholic", icon: CupSoda },
   {
     id: "Whiskey and Spirits",
     label: "Whiskey and Spirits",
@@ -874,12 +890,12 @@ const categoriesWithIcon = [
 ];
 
 const brandsWithIcon = [
-  { id: "local wines", label: "local wines", icon: Grape },
-  { id: "imported wines", label: "imported wines", icon: Wine },
-  { id: "uganda breweries", label: "uganda breweries", icon: Beer },
-  { id: "nile breweries", label: "nile breweries", icon: Beer },
-  { id: "tequila", label: "tequila", icon: Martini },
-  { id: "Uganda waragi", label: "Uganda waragi", icon: Martini },
+  { id: "local wines", label: "local wines", icon: grapeicon },
+  { id: "imported wines", label: "imported wines", icon: wineicon },
+  { id: "uganda breweries", label: "uganda breweries", icon: twobeericon },
+  { id: "nile breweries", label: "nile breweries", icon: twobeericon },
+  { id: "tequila", label: "tequila", icon: martiniicon },
+  { id: "Uganda waragi", label: "Uganda waragi", icon: ugaicon   },
 ];
 function ShoppingHome() {
   const [currentSlide, setCurrentSlide] = useState(0);

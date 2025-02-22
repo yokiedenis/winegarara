@@ -1,31 +1,40 @@
-import CommonForm from "@/components/common/form";
+import { Form, Input, Button } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
-import { loginFormControls } from "@/config";
 import { loginUser } from "@/store/auth-slice";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Card, CardContent } from "@/components/ui/card";
 
-const initialState = {
-    email: "",
-    password: "",
-  };
+const AuthLogin = () => {
+  const [form] = Form.useForm();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { toast } = useToast();
 
-function AuthLogin(){
-    const [formData, setFormData] = useState(initialState);
-    const dispatch = useDispatch();
-    const { toast } = useToast();
-  
+  const hearticon = () => ( 
+ "⌠ʽ⏑ʼ⌡^_~☾☉♁☉☽🌹🥤🍫🍰🧃🏃🏃"
+   );
+   const lunalicon = () => ( 
+"🂡🍷🍹🍸🥃🍺😊❣️@_mail.com"
+      );
+const liuIcon= [
+    {
+                        icon:hearticon       
+    },];
+const lunaicon= [
+    {
+                        icon:lunalicon       
+    },]
 
-    function onSubmit(event) {
-      event.preventDefault();
-  
-      dispatch(loginUser(formData)).then((data) => {
+  const onFinish = (values) => {
+    dispatch(loginUser(values))
+      .then((data) => {
         if (data?.payload?.success) {
           toast({
             title: data?.payload?.message,
-            variant:"success",
+            variant: "success",
           });
+          navigate("/shop/home");
         } else {
           toast({
             title: data?.payload?.message,
@@ -33,32 +42,68 @@ function AuthLogin(){
           });
         }
       });
-    }
+  };
 
-    return <div className="mx-auto w-full max-w-md space-y-6">
-          <div className="text-center">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">
-          Sign in to your account
-        </h1>
-       
-    </div>
-    <CommonForm
-        formControls={loginFormControls}
-        buttonText={"Sign In"}
-        formData={formData}
-        setFormData={setFormData}
-        onSubmit={onSubmit}
-      />
-       <p className="mt-2 text-center">
-          Don't have an account
-          <Link
-            className="font-medium ml-2 text-primary hover:underline"
-            to="/auth/register"
-          >
-            Register
-          </Link>
-        </p>
-    </div>
-}
+  return (
+
+      <Form
+        form={form}
+        onFinish={onFinish}
+        layout="vertical"
+        className="form z-40"
+      >
+        <Form.Item
+          name="email"
+          label="Email"
+          rules={[
+            { type: "email", message: "Invalid email address" },
+            { required: true, message: "Please input your email!" },
+          ]}
+        >
+          <Input placeholder="Email" size="large" />
+          <div className="z-[-20]">
+             {lunaicon.map((categoryItem) => (
+            <Card>
+            <CardContent>   
+          
+            <categoryItem.icon className="w-10 h-10  text-primary" />
+            </CardContent>
+
+            </Card>))}
+            </div>
+        </Form.Item>
+
+        <Form.Item
+          name="password"
+          label="Password"
+          rules={[{ required: true, message: "Please input your password!" }]}
+        >
+          <Input.Password placeholder="Password" size="large" />
+          <div className="z-[-20]">
+             {liuIcon.map((categoryItem) => (
+            <Card>
+            <CardContent>   
+          
+            <categoryItem.icon className="w-10 h-10  text-primary" />
+            </CardContent>
+
+            </Card>))}
+            </div>
+        </Form.Item>
+
+        <Button
+          htmlType="submit"
+           className="wine-button"
+          block
+          size="large"
+          style={{ fontWeight: 600 }}
+        >
+          Login
+        </Button>
+        </Form>
+     
+        
+  );
+};
 
 export default AuthLogin;

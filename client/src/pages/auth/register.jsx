@@ -1,66 +1,68 @@
-import CommonForm from "@/components/common/form";
-import { useToast } from "@/components/ui/use-toast";
-import { registerFormControls } from "@/config";
-import { registerUser } from "@/store/auth-slice";
-import { useState } from "react";
-import { Link, useNavigate} from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { Form, Button, Input } from "antd";
+import { useDispatch} from "react-redux";
 
-const initialState = {
-    userName: "",
-    email: "",
-    password: "",
-  };
 
-function AuthRegister(){
-    const [formData, setFormData] = useState(initialState);
+
+export const Signup = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const {toast}=useToast();
 
-    function onSubmit(event) {
-      event.preventDefault();
-      dispatch(registerUser(formData)).then((data) => {
-        if (data?.payload?.success) {
-          toast({
-            title: data?.payload?.message,
-            variant: "success",
+    const onFinish = (formData) => {
+        dispatch(registerUser(formData)).then((data) => {
+            if (data?.payload?.success) {
+              toast({
+                title: data?.payload?.message,
+              });
+              navigate("/shop/home");
+            } else {
+              toast({
+                title: data?.payload?.message,
+                variant: "destructive",
+              });
+            }
           });
-          navigate("/auth/login");
-        } else {
-          toast({
-            title: data?.payload?.message,
-            variant: "destructive",
-          });
-        }
-      });
     }
-      // console.log(formData)
 
-    return <div className="mx-auto w-full max-w-md space-y-6">
-          <div className="text-center">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">
-          Create new account
-        </h1>
+    return (
+        <Form className="form" layout="vertical" onFinish={onFinish}>
+            <Form.Item
+                name="email"
+                label="Email"
+                 placeholder= "Enter your email"
+                rules={[
+                    { type: "email", message: "Invalid Email" },
+                    { required: true, message: "Email is required" }
+                ]}
+                className="form-item"
+            >
 
-    </div>
-    <CommonForm
-        formControls={registerFormControls}
-        buttonText={"Sign Up"}
-        formData={formData}
-        setFormData={setFormData}
-        onSubmit={onSubmit}
-      />
-       <p className="mt-2 text-center">
-          Already have an account
-          <Link
-            className="font-medium ml-2 text-primary hover:underline"
-            to="/auth/login"
-          >
-            Login
-          </Link>
-        </p>
-    </div>
+                <Input placeholder="Email" />
+            </Form.Item>
+            <Form.Item
+                name="name"
+                label="Username"
+                placeholder= "Enter your username"
+                rules={[
+                    { required: true, message: "Username is required" }
+                ]}
+                className="form-item"
+            >
+                <Input placeholder="Name" />
+            </Form.Item>
+            <Form.Item
+                name="password"
+                label="Password"
+                placeholder="Enter your password"
+                rules={[
+                    { required: true, message: "password is required" }
+                ]}
+                className="form-item"
+            >
+                <Input.Password placeholder="Password" />
+            </Form.Item>
+            <Button className="wine-button" htmlType="submit" block size="large"
+          style={{ fontWeight: 600 }} >Signup</Button>
+        </Form>
+           );
 }
 
-export default AuthRegister;
+export default Signup;

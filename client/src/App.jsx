@@ -1,4 +1,4 @@
-import { Route, Routes,Navigate } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import AuthLayout from "./components/auth/layout";
 import AuthLogin from "./pages/auth/login";
 import AuthRegister from "./pages/auth/register";
@@ -30,7 +30,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const token=sessionStorage.getItem("token")
+    const token = sessionStorage.getItem("token");
     dispatch(checkAuth(token));
   }, [dispatch]);
 
@@ -41,16 +41,8 @@ function App() {
   return (
     <div className="flex flex-col overflow-hidden bg-white">
       <Routes>
-      <Route 
-          path="/" 
-          element={<Navigate to="/shop/home" replace />} 
-        />
-          <Route
-          path="/shop"
-          element={
-              <ShoppingLayout />
-          }
-        >
+        <Route path="/" element={<Navigate to="/shop/home" replace />} />
+        <Route path="/shop" element={<ShoppingLayout />}>
           <Route path="home" element={<ShoppingHome />} />
           <Route path="listing" element={<ShoppingListing />} />
           <Route path="search" element={<SearchProducts />} />
@@ -87,12 +79,10 @@ function App() {
             </CheckAuth>
           }
         >
-          
           <Route path="checkout" element={<ShoppingCheckout />} />
           <Route path="account" element={<ShoppingAccount />} />
           <Route path="paypal-return" element={<PaypalReturnPage />} />
           <Route path="payment-success" element={<PaymentSuccessPage />} />
-          
         </Route>
         <Route path="/unauth-page" element={<UnauthPage />} />
         <Route path="*" element={<NotFound />} />
@@ -100,6 +90,5 @@ function App() {
     </div>
   );
 }
-
 
 export default App;

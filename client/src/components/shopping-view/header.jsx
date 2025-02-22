@@ -165,10 +165,12 @@ function HeaderRightContent({ closeSheet }) {
 
 function ShoppingHeader() {
   const { isAuthenticated } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
   const [openSheet, setOpenSheet] = useState(false);
   const closeSheet = () => setOpenSheet(false);
   const [openCartSheet, setOpenCartSheet] = useState(false);
   const { cartItems } = useSelector((state) => state.shopCart);
+  const navigate = useNavigate();
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background">
       <div className="flex h-16 items-center justify-between px-4 md:px-6">
@@ -178,7 +180,9 @@ function ShoppingHeader() {
         >
           <img src={logo} alt="Logo" className="h-12 w-45 mr-2" />
         </Link>
-        <div className="lg:hidden ml-10 sm:ml-40">
+        
+
+        <div className="lg:hidden sm:ml-40 flex items-center">
         <Sheet open={openCartSheet} onOpenChange={() => setOpenCartSheet(false)}>
         <Button
           onClick={() => setOpenCartSheet(true)}
@@ -201,7 +205,41 @@ function ShoppingHeader() {
           }
         />
       </Sheet>
-      </div>
+        {user ? (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Avatar className="bg-black cursor-pointer">
+              <AvatarFallback className="bg-black text-white font-extrabold">
+                {user?.userName[0].toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent side="right" className="w-56">
+            <DropdownMenuLabel>Logged in as {user?.userName}</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={() => {
+                navigate("/shop/account");
+                closeSheet();
+              }}
+            >
+              <UserCog className="mr-2 h-4 w-4 " />
+              Account
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleLogout}>
+              <LogOut className="mr-2 h-4 w-4" />
+              Logout
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ) : (
+        <Button onClick={() => navigate("/auth/login")} variant="outline">
+          Login
+        </Button>
+      )}
+        
+     
         <Sheet open={openSheet} onOpenChange={setOpenSheet}>
           <SheetTrigger asChild>
             <Button variant="outline" size="icon" className="lg:hidden">
@@ -221,6 +259,7 @@ function ShoppingHeader() {
         <div className="hidden lg:block">
           <HeaderRightContent closeSheet={closeSheet} />
         </div>
+      </div>
       </div>
     </header>
   );
