@@ -12,10 +12,10 @@ const AuthLogin = () => {
   const { toast } = useToast();
 
   const hearticon = () => ( 
- "⌠ʽ⏑ʼ⌡^_~☾☉♁☉☽🌹🥤🍫🍰🧃🏃🏃"
+  "⌠ʽ⏑ʼ⌡^_~☾☉☉☽🍫🍰"
    );
    const lunalicon = () => ( 
-"🂡🍷🍹🍸🥃🍺😊❣️@_mail.com"
+"🂡🍷🍹🥃😊❣️@_mail.com"
       );
 const liuIcon= [
     {

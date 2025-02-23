@@ -1,14 +1,15 @@
 .form-container {
   display: flex;
   align-items: center;
-  justify-content: center;
-  height: 100vh;
+  justify-content:space-between;
+  height: 90vh;
 z-index: 50;
 position: relative;
 
   .tabs-container {
     width: 40vw;
-    padding: 5px;
+    padding: 15px;
+    height: 90vh;
     .form {
       padding: 10px;
       display: flex;

@@ -172,7 +172,7 @@ function ShoppingHeader() {
   const { cartItems } = useSelector((state) => state.shopCart);
   const navigate = useNavigate();
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background">
+    <header className="sticky z-40 top-0 w-full border-b bg-background">
       <div className="flex h-16 items-center justify-between px-4 md:px-6">
         <Link
           to="/shop/home"
@@ -238,7 +238,7 @@ function ShoppingHeader() {
           Login
         </Button>
       )}
-        
+         
      
         <Sheet open={openSheet} onOpenChange={setOpenSheet}>
           <SheetTrigger asChild>
@@ -259,6 +259,7 @@ function ShoppingHeader() {
         <div className="hidden lg:block">
           <HeaderRightContent closeSheet={closeSheet} />
         </div>
+     
       </div>
       </div>
     </header>

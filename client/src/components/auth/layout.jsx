@@ -4,14 +4,14 @@ import   Signup  from "../../pages/auth/register"; // Import your Signup compone
 import "../../entry.scss"; // Import your SCSS file for styling
 import img from "@/assets/test4.png";
 import img3 from "@/assets/background.png";
-// import img2 from "@/assets/transperant.png";
+import img2 from "@/assets/transperant.png";
 import img4 from "@/assets/logo.png";
 function AuthLayout() {
   return (
     <div className="flex bg-black min-h-screen w-full">
       {/* Left Side (Welcome Section) */}
       <div className="obsolute left-0  bg-black w-1/2">
-        <div className="max-w-md h-80vh  space-y-6 ">
+        <div className="max-w-md h-80vh  space-y-6 animate">
         <img src={img} className="h-80vh w-full object-cover object-center" />
 
       </div>
@@ -25,8 +25,8 @@ function AuthLayout() {
         <div className="form-container">
         
           <div className="tabs-container">
-        
-          <img src={img4} className="h-full w-full" />
+
+          <img src={img4} className="h-50vh w-50vw relative top-0px" />
 
           <img src={img3} className="h-full w-full absolute " />
             <Tabs
