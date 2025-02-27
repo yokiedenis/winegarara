@@ -1,26 +1,42 @@
+.animate{
+  background: url("../src/assets/test4.png");
+  background-position: center;
+  background-size: 90%;
+  animation: splashit 21s steps(190) infinite;
+  max-width:786px;
+  height: 700px;
+@keyframes splashit {
+  100% {
+    background-position: 0 5046px;
+  }
+}
+}
 .form-container {
   display: flex;
   align-items: center;
-  justify-content:space-between;
-  height: 90vh;
+  // justify-content:space-between;
+  height: 110vh;
 z-index: 50;
 position: relative;
 
+// scroll-behavior: smooth;
   .tabs-container {
     width: 40vw;
-    padding: 15px;
-    height: 90vh;
+    padding: 10px;
+    height: 110vh;
+    }
     .form {
       padding: 10px;
       display: flex;
       flex-direction: column;
+      
       .form-item {
         margin-bottom: 8px;
         
       }
     }
   }
-}
+
 /* AuthLogin.css */
 .wine-button {
   background-color: #722f38; /* Wine color */
@@ -57,4 +73,11 @@ position: relative;
     width: 90vw;
     background-color: black;
   }}
+}
+@media only screen and (min-width: 768px){
+  .form-container {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    scrollbar-color: black;
+  }
 }

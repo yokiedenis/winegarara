@@ -5,7 +5,7 @@ import { useDispatch} from "react-redux";
 
 export const Signup = () => {
     const dispatch = useDispatch();
-
+    const [form] = Form.useForm();
     const onFinish = (formData) => {
         dispatch(registerUser(formData)).then((data) => {
             if (data?.payload?.success) {
@@ -23,7 +23,7 @@ export const Signup = () => {
     }
 
     return (
-        <Form className="form" layout="vertical" onFinish={onFinish}>
+        <Form form={form} className="form" layout="vertical" onFinish={onFinish}>
             <Form.Item
                 name="email"
                 label="Email"

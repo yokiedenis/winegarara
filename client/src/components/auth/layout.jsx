@@ -12,23 +12,22 @@ function AuthLayout() {
       {/* Left Side (Welcome Section) */}
       <div className="obsolute left-0  bg-black w-1/2">
         <div className="max-w-md h-80vh  space-y-6 animate">
-        <img src={img} className="h-80vh w-full object-cover object-center" />
-
+         
       </div>
         
       </div>
 
       {/* Right Side (Form Section) */}
-      <div className="flex flex-1 items-center justify-center w-full">
+      <div className="flex flex-1 items-center  w-full">
         
         {/* Entry Component with Tabs for Login and Signup */}
         <div className="form-container">
         
           <div className="tabs-container">
 
-          <img src={img4} className="h-50vh w-50vw relative top-0px" />
+          <img src={img2} className="h-20vh w-20vw imagex" />
 
-          <img src={img3} className="h-full w-full absolute " />
+          <img src={img3} className="h-full absolute " />
             <Tabs
               items={[
                 {
