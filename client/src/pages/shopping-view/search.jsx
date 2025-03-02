@@ -37,7 +37,7 @@ function SearchProducts() {
     }
   }, [keyword]);
 
-  function handleAddToCart(getCurrentProductId, getTotalStock) {
+  function handleAddToCart(getCurrentProductId, getTotalStock, price) {
     let getCartItems = cartItems.items || [];
 
     if (getCartItems.length) {
@@ -80,6 +80,7 @@ function SearchProducts() {
         addToCart({
           productId: getCurrentProductId,
           quantity: 1,
+          price,
         })
       ).then((data) => {
         if (data?.payload?.data) {
@@ -124,7 +125,7 @@ function SearchProducts() {
           <ShoppingProductTile
             product={item}
             handleGetProductDetails={handleGetProductDetails}
-            handleAddtoCart={() => handleAddToCart(item._id,item.totalStock)} 
+            handleAddtoCart={() => handleAddToCart(item._id,item.totalStock,item.price)} 
           />
         ))}
       </div>

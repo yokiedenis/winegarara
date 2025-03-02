@@ -2,29 +2,29 @@ import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState = {
-  cartItems: JSON.parse(sessionStorage.getItem("guestCart")) || [],
+  cartItems: JSON.parse(localStorage.getItem("guestCart")) || [],
   isLoading: false,
   isGuestCart: true,
 };
 
 export const addToCart = createAsyncThunk(
   "cart/addToCart",
-  async ({ productId, quantity }, { rejectWithValue, getState }) => {
+  async ({ productId, quantity, price }, { rejectWithValue, getState }) => {
     const state = getState();
     const isGuest = !state.auth.user;
-    // console.log("auth.user:", state.auth.user);
+    // console.log("auth.user:", price);
     if (isGuest) {
       try {
         // Verify product exists
         const productRes = await axios.get(
           `${
             import.meta.env.VITE_API_URL
-          }/api/shop/cart/verifyExistence/${productId}`
+          }/api/shop/cart/verifyExistence/${productId}?price=${price}`
         );
         const products = productRes.data;
 
-        // Update sessionStorage
-        const guestCart = JSON.parse(sessionStorage.getItem("guestCart")) || [];
+        // Update localStorage
+        const guestCart = JSON.parse(localStorage.getItem("guestCart")) || [];
         const existingIndex = guestCart.findIndex(
           (item) => item.productId === productId
         );
@@ -45,7 +45,7 @@ export const addToCart = createAsyncThunk(
           });
         }
 
-        sessionStorage.setItem("guestCart", JSON.stringify(guestCart));
+        localStorage.setItem("guestCart", JSON.stringify(guestCart));
 
         const newguestcart = { items: [...guestCart] };
         // console.log("newguestcart",newguestcart)
@@ -55,7 +55,7 @@ export const addToCart = createAsyncThunk(
       }
     } else {
       // Existing API call for logged-in users
-      const token = sessionStorage.getItem("token");
+      const token = localStorage.getItem("token");
       // console.log("token",token)
       try {
         const response = await axios.post(
@@ -87,11 +87,9 @@ export const fetchCartItems = createAsyncThunk(
 
     if (isGuest) {
       try {
-        const guestCart = JSON.parse(
-          sessionStorage.getItem("guestCart") || "[]"
-        );
+        const guestCart = JSON.parse(localStorage.getItem("guestCart") || "[]");
 
-        // Filter out invalid products and update sessionStorage
+        // Filter out invalid products and update localStorage
         const newguestcart = { items: [...guestCart] };
         return { data: newguestcart };
       } catch (error) {
@@ -121,11 +119,11 @@ export const deleteCartItem = createAsyncThunk(
     const isGuest = !state.auth.user;
 
     if (isGuest) {
-      const guestCart = JSON.parse(sessionStorage.getItem("guestCart") || "[]");
+      const guestCart = JSON.parse(localStorage.getItem("guestCart") || "[]");
       const updatedCart = guestCart.filter(
         (item) => item.productId !== productId
       );
-      sessionStorage.setItem("guestCart", JSON.stringify(updatedCart));
+      localStorage.setItem("guestCart", JSON.stringify(updatedCart));
       const newAfterDeleteCart = { items: [...updatedCart] };
       return { data: newAfterDeleteCart };
     } else {
@@ -153,7 +151,7 @@ export const updateCartQuantity = createAsyncThunk(
     const isGuest = !state.auth.user;
 
     if (isGuest) {
-      const guestCart = JSON.parse(sessionStorage.getItem("guestCart") || "[]");
+      const guestCart = JSON.parse(localStorage.getItem("guestCart") || "[]");
       const itemIndex = guestCart.findIndex(
         (item) => item.productId === productId
       );
@@ -161,7 +159,7 @@ export const updateCartQuantity = createAsyncThunk(
       if (itemIndex === -1) return rejectWithValue("Item not found");
 
       guestCart[itemIndex].quantity = quantity;
-      sessionStorage.setItem("guestCart", JSON.stringify(guestCart));
+      localStorage.setItem("guestCart", JSON.stringify(guestCart));
       const newAfterQty = { items: [...guestCart] };
       return { data: newAfterQty };
     } else {
@@ -229,7 +227,6 @@ const shoppingCartSlice = createSlice({
       .addCase(updateCartQuantity.fulfilled, (state, action) => {
         state.isLoading = false;
         state.cartItems = action.payload.data;
- 
       })
       .addCase(updateCartQuantity.rejected, (state) => {
         state.isLoading = false;

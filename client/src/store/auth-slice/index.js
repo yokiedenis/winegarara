@@ -22,19 +22,23 @@ export const registerUser = createAsyncThunk(
     );
     dispatch(authSlice.actions.setUser(response.data.user));
     const token = response.data.token;
-    sessionStorage.setItem("token", token); // Add this line 
+    localStorage.setItem("token", token); // Add this line
 
     // Merge guest cart after successful registration
-    const guestCart = JSON.parse(sessionStorage.getItem("guestCart") || "[]");
+    const guestCart = JSON.parse(localStorage.getItem("guestCart") || "[]");
     if (guestCart.length > 0) {
       for (const item of guestCart) {
         await dispatch(
-          addToCart({ productId: item.productId, quantity: item.quantity })
+          addToCart({
+            productId: item.productId,
+            quantity: item.quantity,
+            price: item.price,
+          })
         ).catch((error) => {
           console.error("Error merging cart:", error);
         });
       }
-      sessionStorage.removeItem("guestCart");
+      localStorage.removeItem("guestCart");
     }
 
     return response.data;
@@ -43,7 +47,7 @@ export const registerUser = createAsyncThunk(
 export const loginUser = createAsyncThunk(
   "/auth/login",
   async (formData, { dispatch }) => {
-    console.log(formData)
+    console.log(formData);
     // Add `{ dispatch }` to access the dispatch method
     const response = await axios.post(
       `${import.meta.env.VITE_API_URL}/api/auth/login`,
@@ -53,22 +57,25 @@ export const loginUser = createAsyncThunk(
       }
     );
     const token = response.data.token;
-    sessionStorage.setItem("token", token); // Add this line
+    localStorage.setItem("token", token); // Add this line
     dispatch(authSlice.actions.setUser(response.data.user));
-  
 
     // Merge guest cart after successful login
-    const guestCart = JSON.parse(sessionStorage.getItem("guestCart") || "[]");
+    const guestCart = JSON.parse(localStorage.getItem("guestCart") || "[]");
     // console.log("inside logim",guestCart)
     if (guestCart.length > 0) {
       await Promise.all(
         guestCart.map((item) =>
           dispatch(
-            addToCart({ productId: item.productId, quantity: item.quantity  })
+            addToCart({
+              productId: item.productId,
+              quantity: item.quantity,
+              price: item.price,
+            })
           )
         )
       );
-      sessionStorage.removeItem("guestCart");
+      localStorage.removeItem("guestCart");
     }
 
     return response.data;
@@ -136,8 +143,8 @@ const authSlice = createSlice({
   reducers: {
     setUser: (state, action) => {
       state.user = action.payload;
-    state.isAuthenticated = !!action.payload;
-    state.token = action.payload?.token; 
+      state.isAuthenticated = !!action.payload;
+      state.token = action.payload?.token;
     },
     resetTokenAndCredentials: (state) => {
       state.isAuthenticated = false;
@@ -155,7 +162,7 @@ const authSlice = createSlice({
         state.user = action.payload.success ? action.payload.user : null;
         state.isAuthenticated = action.payload.success;
         state.token = action.payload.token;
-        sessionStorage.setItem("token", action.payload.token); 
+        localStorage.setItem("token", action.payload.token);
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -171,7 +178,7 @@ const authSlice = createSlice({
         state.user = action.payload.success ? action.payload.user : null;
         state.isAuthenticated = action.payload.success;
         state.token = action.payload.token;
-        sessionStorage.setItem("token", action.payload.token); 
+        localStorage.setItem("token", action.payload.token);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;

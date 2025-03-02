@@ -7,12 +7,12 @@ import { Navigate, useNavigate } from "react-router-dom";
 function AdminHeader({ setOpen }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+
   function handleLogout() {
     //for secure
     // dispatch(logoutUser());
-    dispatch(resetTokenAndCredentials())
-    sessionStorage.clear();
+    dispatch(resetTokenAndCredentials());
+    localStorage.clear();
     navigate("/auth/login");
   }
 

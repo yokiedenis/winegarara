@@ -859,28 +859,101 @@ const Whiskeyicon = () => (
     </g>
   </svg>
 );
-const grapeicon = () => ( 
-  "🍇🌱"
-    );
-    const wineicon = () => ( 
- "🍷🚚"
-       );
-       const martiniicon = () => ( 
-        "🥃🍸"
-              );   
-              
-        const twobeericon = () => ( 
-                "🍻🍺"
-                      );
-                      const ugaicon = () => ( 
-                        "🍉🧊"
-                              );
+const sodaicon = () => (
+  <svg
+  version="1.1"
+  id="Layer_1"
+  xmlns="http://www.w3.org/2000/svg"
+  x="0"
+  y="0"
+  viewBox="0 0 256 256"
+  style={{ enableBackground: "new 0 0 256 256" }}
+  xmlSpace="preserve"
+>
+  <style>
+    {`
+      .st0 { fill: #382b73; }
+      .st4 { fill: #e43d91; }
+      .st6 { fill: #d1d3d4; }
+      .st7 { fill: #fff; }
+    `}
+  </style>
+  <switch>
+    <g>
+      <circle className="st0" cx="128" cy="128" r="120" />
+      <circle cx="128" cy="128" r="102.5" style={{ fill: "#473080" }} />
+      <path
+        className="st0"
+        d="M164.833 98.756h-.583v-8.167a2 2 0 0 0-2-2h-30.592v-8.636c0-.715.381-1.375 1-1.732l29.263-16.895a2 2 0 0 0 .732-2.732l-1.658-2.872a2 2 0 0 0-2.732-.732l-31.921 18.428a4 4 0 0 0-2 3.464v11.707H93.75a2 2 0 0 0-2 2v8.167h-.583a4 4 0 0 0-4 4v1.333a1 1 0 0 0 1 1h3.583l8.249 96.009a4 4 0 0 0 3.985 3.658h48.032a4 4 0 0 0 3.985-3.658l8.249-96.009h3.583a1 1 0 0 0 1-1v-1.333a4 4 0 0 0-4-4z"
+      />
+      <g>
+        <path
+          d="m162.653 51.594-1.658-2.872a2 2 0 0 0-2.732-.732l-31.921 18.428a4 4 0 0 0-2 3.464v21.873h7.316V72.953c0-.715.381-1.375 1-1.732l29.262-16.895a2 2 0 0 0 .733-2.732z"
+          style={{ fill: "#fede3a" }}
+        />
+        <path
+          d="m162.653 51.594-.317-.549a2.16 2.16 0 0 1-.5.412l-31.75 18.331a2.171 2.171 0 0 0-1.085 1.879v20.089h2.658V72.953c0-.715.381-1.375 1-1.732l29.263-16.895a2.001 2.001 0 0 0 .731-2.732z"
+          style={{ fill: "#e7ad27" }}
+        />
+        <path
+          className="st4"
+          d="M152.016 197.756h-48.032a4 4 0 0 1-3.985-3.658L91.75 98.089h72.5l-8.249 96.009a4 4 0 0 1-3.985 3.658z"
+        />
+        <path
+          d="M142.354 197.756h-28.709c-1.241 0-2.276-1.589-2.382-3.658l-4.93-96.009h43.333l-4.93 96.009c-.106 2.069-1.141 3.658-2.382 3.658z"
+          style={{ fill: "#ef5a9d" }}
+        />
+        <path
+          className="st6"
+          d="M164.833 91.756H91.167a4 4 0 0 0-4 4v1.333a1 1 0 0 0 1 1h79.667a1 1 0 0 0 1-1v-1.333a4.002 4.002 0 0 0-4.001-4z"
+        />
+        <path
+          className="st7"
+          d="M151.512 91.756h-47.025a3.238 3.238 0 0 0-3.238 3.238v2.286c0 .447.362.809.809.809h51.881a.809.809 0 0 0 .809-.809v-2.286a3.234 3.234 0 0 0-3.236-3.238z"
+        />
+        <path
+          className="st6"
+          d="M162.25 81.589h-68.5a2 2 0 0 0-2 2v8.167h72.5v-8.167a2 2 0 0 0-2-2z"
+        />
+        <path
+          className="st7"
+          d="M151.823 81.589h-47.645c-.926 0-1.677.751-1.677 1.677v8.489h51v-8.489a1.679 1.679 0 0 0-1.678-1.677z"
+        />
+        <path
+          className="st6"
+          d="M91.75 89.068h72.5v2.688h-72.5zM167.833 96.089H88.167a.985.985 0 0 1-.955-.778c-.017.148-.045.292-.045.445v1.333a1 1 0 0 0 1 1h79.667a1 1 0 0 0 1-1v-1.333c0-.152-.028-.297-.045-.445a.987.987 0 0 1-.956.778z"
+        />
+        <path
+          className="st4"
+          d="m99.354 186.589.645 7.509a4 4 0 0 0 3.985 3.658h48.032a4 4 0 0 0 3.985-3.658l.645-7.509H99.354z"
+        />
+        <g>
+          <circle className="st4" cx="120.472" cy="132.101" r="9.009" />
+          <circle className="st4" cx="138.883" cy="123.978" r="5.654" />
+          <path
+            className="st4"
+            d="M130.367 154.94a5.654 5.654 0 1 1-11.308 0 5.654 5.654 0 0 1 11.308 0zM143.685 143.461a6.948 6.948 0 1 1-13.897 0 6.948 6.948 0 0 1 13.897 0z"
+          />
+        </g>
+      </g>
+    </g>
+  </switch>
+</svg>
+)
+const grapeicon = () => "🍇🌱";
+const wineicon = () => "🍷🚚";
+const martiniicon = () => "🥃🍸";
+const ShopIcon = () => "🛒🛍️";
+
+const onebeericon = () => "🍻🍺";
+const twobeericon = () => "🍻🌾";
+const ugaicon = () => "🍉🧊";
 // Define other icons similarly...
 const categoriesWithIcon = [
   { id: "Sweet Wine", label: "Sweet Wine", icon: sweetwineicon },
   { id: "Dry Wine", label: "Dry Wine", icon: drywineicon },
   { id: "Sparkling", label: "Sparkling", icon: champagneicon },
-  { id: "Non-Alcoholic", label: "Non-Alcoholic", icon: CupSoda },
+  { id: "Non-Alcoholic", label: "Non-Alcoholic", icon: sodaicon },
   {
     id: "Whiskey and Spirits",
     label: "Whiskey and Spirits",
@@ -892,10 +965,10 @@ const categoriesWithIcon = [
 const brandsWithIcon = [
   { id: "local wines", label: "local wines", icon: grapeicon },
   { id: "imported wines", label: "imported wines", icon: wineicon },
-  { id: "uganda breweries", label: "uganda breweries", icon: twobeericon },
+  { id: "uganda breweries", label: "uganda breweries", icon: onebeericon },
   { id: "nile breweries", label: "nile breweries", icon: twobeericon },
   { id: "tequila", label: "tequila", icon: martiniicon },
-  { id: "Uganda waragi", label: "Uganda waragi", icon: ugaicon   },
+  { id: "Uganda waragi", label: "Uganda waragi", icon: ugaicon },
 ];
 function ShoppingHome() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -913,12 +986,12 @@ function ShoppingHome() {
   const { toast } = useToast();
 
   function handleNavigateToListingPage(getCurrentItem, section) {
-    sessionStorage.removeItem("filters");
+    localStorage.removeItem("filters");
     const currentFilter = {
       [section]: [getCurrentItem.id],
     };
 
-    sessionStorage.setItem("filters", JSON.stringify(currentFilter));
+    localStorage.setItem("filters", JSON.stringify(currentFilter));
     navigate(`/shop/listing`);
   }
 
@@ -926,7 +999,7 @@ function ShoppingHome() {
     dispatch(fetchProductDetails(getCurrentProductId));
   }
 
-  function handleAddToCart(getCurrentProductId, getTotalStock) {
+  function handleAddToCart(getCurrentProductId, getTotalStock, price) {
     let getCartItems = cartItems.items || [];
 
     if (getCartItems.length) {
@@ -944,24 +1017,22 @@ function ShoppingHome() {
           return;
         }
       }
-    } if (user?.id) {
+    }
+    if (user?.id) {
       // Authenticated user
-      
+
       dispatch(
         addToCart({
-
           productId: getCurrentProductId,
           quantity: 1,
         })
       ).then((data) => {
-  
         if (data?.payload.data) {
-          
-  dispatch(fetchCartItems(user.id));
-  toast({
-    title: "Product is added to cart",
-  });
-}    
+          dispatch(fetchCartItems(user.id));
+          toast({
+            title: "Product is added to cart",
+          });
+        }
       });
     } else {
       // Guest user
@@ -969,6 +1040,7 @@ function ShoppingHome() {
         addToCart({
           productId: getCurrentProductId,
           quantity: 1,
+          price,
         })
       ).then((data) => {
         if (data?.payload?.data) {
@@ -979,7 +1051,7 @@ function ShoppingHome() {
         }
       });
     }
-    };
+  }
   useEffect(() => {
     if (productDetails !== null) setOpenDetailsDialog(true);
   }, [productDetails]);
@@ -1093,17 +1165,24 @@ function ShoppingHome() {
       <section className="py-12">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-8">
-            Feature Products
+            Feature Products<ShopIcon />
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {productList && productList.length > 0
               ? productList.map((productItem) => (
-
+                
                   <ShoppingProductTile
                     handleGetProductDetails={handleGetProductDetails}
                     product={productItem}
-                    handleAddtoCart={() => handleAddToCart(productItem._id,productItem.totalStock)} 
+                    handleAddtoCart={() =>
+                      handleAddToCart(
+                        productItem._id,
+                        productItem.totalStock,
+                        productItem.price
+                      )
+                    }
                   />
+                  
                 ))
               : null}
           </div>

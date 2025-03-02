@@ -32,7 +32,7 @@ function MenuItems({ closeSheet }) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   function handleNavigate(getCurrentMenuItem) {
-    sessionStorage.removeItem("filters");
+    localStorage.removeItem("filters");
     const currentFilter =
       getCurrentMenuItem.id !== "home" &&
       getCurrentMenuItem.id !== "products" &&
@@ -42,7 +42,7 @@ function MenuItems({ closeSheet }) {
           }
         : null;
 
-    sessionStorage.setItem("filters", JSON.stringify(currentFilter));
+    localStorage.setItem("filters", JSON.stringify(currentFilter));
 
     location.pathname.includes("listing") && currentFilter !== null
       ? setSearchParams(
@@ -78,7 +78,7 @@ function HeaderRightContent({ closeSheet }) {
     //for secure
     // dispatch(logoutUser());
     dispatch(resetTokenAndCredentials());
-    sessionStorage.clear();
+    localStorage.clear();
     navigate("/auth/login");
   }
 
@@ -86,11 +86,11 @@ function HeaderRightContent({ closeSheet }) {
     // console.log("usertest", user?.id);
 
     if (!user?.id) {
-      let guestCart = sessionStorage.getItem("guestCart");
+      let guestCart = localStorage.getItem("guestCart");
 
       // If guestCart is not set or is empty, initialize it to an empty array
       if (!guestCart) {
-        sessionStorage.setItem("guestCart", JSON.stringify([]));
+        localStorage.setItem("guestCart", JSON.stringify([]));
       }
       // console.log("usertest2", user?.id);
       dispatch(fetchCartItems(null));
@@ -175,7 +175,7 @@ function ShoppingHeader() {
     //for secure
     // dispatch(logoutUser());
     dispatch(resetTokenAndCredentials());
-    sessionStorage.clear();
+    localStorage.clear();
     navigate("/auth/login");
   }
   return (
@@ -187,78 +187,81 @@ function ShoppingHeader() {
         >
           <img src={logo} alt="Logo" className="h-12 w-45 mr-2" />
         </Link>
-        
 
         <div className="lg:hidden sm:ml-40 flex items-center">
-        <Sheet open={openCartSheet} onOpenChange={() => setOpenCartSheet(false)}>
-        <Button
-          onClick={() => setOpenCartSheet(true)}
-          variant="outline"
-          size="icon"
-          className="relative"
-        >
-          <ShoppingCart className="w-6 h-6" />
-          <span className="absolute top-[-5px] right-[2px] font-bold text-sm">
-            {cartItems?.items?.length || 0}
-          </span>
-          <span className="sr-only">User cart</span>
-        </Button>
-        <UserCartWrapper
-          setOpenCartSheet={setOpenCartSheet}
-          cartItems={
-            cartItems && cartItems.items && cartItems.items.length > 0
-              ? cartItems.items
-              : []
-          }
-        />
-      </Sheet>
-        {user ? (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Avatar className="bg-black cursor-pointer">
-              <AvatarFallback className="bg-black text-white font-extrabold">
-                {user?.userName[0].toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent side="right" className="w-56">
-            <DropdownMenuLabel>Logged in as {user?.userName}</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => {
-                navigate("/shop/account");
-                closeSheet();
-              }}
+          <Sheet
+            open={openCartSheet}
+            onOpenChange={() => setOpenCartSheet(false)}
+          >
+            <Button
+              onClick={() => setOpenCartSheet(true)}
+              variant="outline"
+              size="icon"
+              className="relative"
             >
-              <UserCog className="mr-2 h-4 w-4 " />
-              Account
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleLogout}>
-              <LogOut className="mr-2 h-4 w-4" />
-              Logout
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      ) : (
-        <Button onClick={() => navigate("/auth/login")} variant="outline">
-          Login
-        </Button>
-      )}
-         
-     
-        <Sheet open={openSheet} onOpenChange={setOpenSheet}>
-          <SheetTrigger asChild>
-            <Button variant="outline" size="icon" className="lg:hidden">
-              <Menu className="h-6 w-6" />
-              <span className="sr-only">Toggle header menu</span>
+              <ShoppingCart className="w-6 h-6" />
+              <span className="absolute top-[-5px] right-[2px] font-bold text-sm">
+                {cartItems?.items?.length || 0}
+              </span>
+              <span className="sr-only">User cart</span>
             </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="w-full max-w-xs">
-            <MenuItems closeSheet={closeSheet} />
-            <HeaderRightContent closeSheet={closeSheet} />
-          </SheetContent>
-        </Sheet>
+            <UserCartWrapper
+              setOpenCartSheet={setOpenCartSheet}
+              cartItems={
+                cartItems && cartItems.items && cartItems.items.length > 0
+                  ? cartItems.items
+                  : []
+              }
+            />
+          </Sheet>
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Avatar className="bg-black cursor-pointer">
+                  <AvatarFallback className="bg-black text-white font-extrabold">
+                    {user?.userName[0].toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent side="right" className="w-56">
+                <DropdownMenuLabel>
+                  Logged in as {user?.userName}
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => {
+                    navigate("/shop/account");
+                    closeSheet();
+                  }}
+                >
+                  <UserCog className="mr-2 h-4 w-4 " />
+                  Account
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button onClick={() => navigate("/auth/login")} variant="outline">
+              Login
+            </Button>
+          )}
+
+          <Sheet open={openSheet} onOpenChange={setOpenSheet}>
+            <SheetTrigger asChild>
+              <Button variant="outline" size="icon" className="lg:hidden">
+                <Menu className="h-6 w-6" />
+                <span className="sr-only">Toggle header menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-full max-w-xs">
+              <MenuItems closeSheet={closeSheet} />
+              <HeaderRightContent closeSheet={closeSheet} />
+            </SheetContent>
+          </Sheet>
         </div>
         <div className="hidden lg:block">
           <MenuItems closeSheet={closeSheet} />
@@ -267,9 +270,7 @@ function ShoppingHeader() {
         <div className="hidden lg:block">
           <HeaderRightContent closeSheet={closeSheet} />
         </div>
-     
       </div>
-      
     </header>
   );
 }

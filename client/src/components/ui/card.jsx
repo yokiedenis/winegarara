@@ -1,11 +1,12 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
-
+const ShopIcon = () => "🛒🛍️";
 const Card = React.forwardRef(({ className, ...props }, ref) => (
   <div
+  
     ref={ref}
-    className={cn("text-card-foreground", className)}
+    className={cn("text-card-foreground p-2 shadow-lg", className)}
     {...props} />
 ))
 Card.displayName = "Card"
@@ -23,7 +24,9 @@ const CardTitle = React.forwardRef(({ className, ...props }, ref) => (
     ref={ref}
     className={cn("text-2xl font-semibold leading-none tracking-tight", className)}
     {...props} />
+    
 ))
+
 CardTitle.displayName = "CardTitle"
 
 const CardDescription = React.forwardRef(({ className, ...props }, ref) => (
@@ -35,14 +38,14 @@ const CardDescription = React.forwardRef(({ className, ...props }, ref) => (
 CardDescription.displayName = "CardDescription"
 
 const CardContent = React.forwardRef(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("p-0 pt-0 z-[-20]", className)} {...props} />
+  <div ref={ref} className={cn("p-2 pt-5", className)} {...props} />
 ))
 CardContent.displayName = "CardContent"
 
 const CardFooter = React.forwardRef(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("flex items-center p-0 pt-0", className)}
+    className={cn("flex items-center p-0 pt-0 ", className)}
     {...props} />
 ))
 CardFooter.displayName = "CardFooter"

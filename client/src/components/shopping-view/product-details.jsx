@@ -38,7 +38,7 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
       minimumFractionDigits: 0,
     }).format(amount);
   };
-  function handleAddToCart(getCurrentProductId, getTotalStock) {
+  function handleAddToCart(getCurrentProductId, getTotalStock,price) {
     let getCartItems = cartItems.items || [];
 
     if (getCartItems.length) {
@@ -81,6 +81,7 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
         addToCart({
           productId: getCurrentProductId,
           quantity: 1,
+          price,
         })
       ).then((data) => {
         if (data?.payload?.data) {
@@ -202,7 +203,9 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
                 onClick={() =>
                   handleAddToCart(
                     productDetails?._id,
-                    productDetails?.totalStock
+                    productDetails?.totalStock,
+                    productDetails?.price,
+
                   )
                 }
               >

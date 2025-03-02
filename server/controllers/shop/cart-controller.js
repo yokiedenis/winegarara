@@ -3,15 +3,23 @@ const Product = require("../../models/Product");
 
 const verifyExistence = async (req, res) => {
   try {
-    const { productId } = req.params;
-    // console.log("veri",req.params)//inspect
+    const { productId} = req.params;
+    const { price } = req.query;
+    console.log("veri",req.params,req.query)//inspect
+    
     const product = await Product.findById(productId);
     if (!product)
-      return res.status(408).json({
+      return res.status(404).json({
         success: false,
         message: "Product not found!",
       });
-
+      // console.log("products",product.price,price,product)
+if(price!==product.price.toString()){
+  return res.status(404).json({
+    success: false,
+    message: "Price is edited!",
+  });
+}
     res.status(200).json({
       success: true,
       data: product,

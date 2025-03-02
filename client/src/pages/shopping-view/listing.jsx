@@ -20,7 +20,7 @@ import { ArrowUpDownIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
-
+const ShopIcon = () => "🛒🛍️";
 function createSearchParamsHelper(filterParams) {
   const queryParams = [];
 
@@ -75,14 +75,14 @@ function ShoppingListing() {
     }
 
     setFilters(cpyFilters);
-    sessionStorage.setItem("filters", JSON.stringify(cpyFilters));
+    localStorage.setItem("filters", JSON.stringify(cpyFilters));
   }
 
   function handleGetProductDetails(getCurrentProductId) {
     // console.log(getCurrentProductId);
     dispatch(fetchProductDetails(getCurrentProductId));
   }
-  function handleAddToCart(getCurrentProductId, getTotalStock) {
+  function handleAddToCart(getCurrentProductId, getTotalStock, price) {
     let getCartItems = cartItems.items || [];
 
     if (getCartItems.length) {
@@ -100,9 +100,10 @@ function ShoppingListing() {
           return;
         }
       }
-    } if (user?.id) {
+    }
+    if (user?.id) {
       // Authenticated user
-      
+
       dispatch(
         addToCart({
           userId: user?.id,
@@ -110,14 +111,12 @@ function ShoppingListing() {
           quantity: 1,
         })
       ).then((data) => {
-  
         if (data?.payload.data) {
-          
-  dispatch(fetchCartItems(user.id));
-  toast({
-    title: "Product is added to cart",
-  });
-}    
+          dispatch(fetchCartItems(user.id));
+          toast({
+            title: "Product is added to cart",
+          });
+        }
       });
     } else {
       // Guest user
@@ -125,6 +124,7 @@ function ShoppingListing() {
         addToCart({
           productId: getCurrentProductId,
           quantity: 1,
+          price,
         })
       ).then((data) => {
         if (data?.payload?.data) {
@@ -135,10 +135,10 @@ function ShoppingListing() {
         }
       });
     }
-    };
+  }
   useEffect(() => {
     setSort("price-lowtohigh");
-    setFilters(JSON.parse(sessionStorage.getItem("filters")) || {});
+    setFilters(JSON.parse(localStorage.getItem("filters")) || {});
   }, [categorySearchParam]);
 
   useEffect(() => {
@@ -166,12 +166,12 @@ function ShoppingListing() {
       <ProductFilter filters={filters} handleFilter={handleFilter} />
       <div className="bg-background w-full rounded-lg shadow-sm">
         <div className="p-4 border-b flex items-center justify-between">
-          <h2 className="text-lg font-extrabold">All Products</h2>
+          <h2 className="text-lg font-extrabold">All Products <ShopIcon/></h2>
           <div className="flex items-center gap-3">
             <span className="text-muted-foreground">
               {productList?.length} Products
             </span>
-            <DropdownMenu>      
+            <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="outline"
@@ -203,7 +203,13 @@ function ShoppingListing() {
                 <ShoppingProductTile
                   handleGetProductDetails={handleGetProductDetails}
                   product={productItem}
-                  handleAddtoCart={() => handleAddToCart(productItem._id,productItem.totalStock)} 
+                  handleAddtoCart={() =>
+                    handleAddToCart(
+                      productItem._id,
+                      productItem.totalStock,
+                      productItem.price
+                    )
+                  }
                 />
               ))
             : null}

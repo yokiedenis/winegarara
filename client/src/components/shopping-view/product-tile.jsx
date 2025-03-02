@@ -81,7 +81,7 @@ const truncatedDescription = product?.description?.length > 100
           </Button>
         ) : (
           <Button
-            onClick={() => handleAddtoCart(product?._id, product?.totalStock)}
+            onClick={() => handleAddtoCart(product?._id, product?.totalStock,product?.price)}
             className="w-full"
           >
             

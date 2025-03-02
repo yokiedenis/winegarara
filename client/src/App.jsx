@@ -30,7 +30,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     dispatch(checkAuth(token));
   }, [dispatch]);
 
