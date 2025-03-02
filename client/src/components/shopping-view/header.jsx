@@ -171,6 +171,13 @@ function ShoppingHeader() {
   const [openCartSheet, setOpenCartSheet] = useState(false);
   const { cartItems } = useSelector((state) => state.shopCart);
   const navigate = useNavigate();
+  function handleLogout() {
+    //for secure
+    // dispatch(logoutUser());
+    dispatch(resetTokenAndCredentials());
+    sessionStorage.clear();
+    navigate("/auth/login");
+  }
   return (
     <header className="sticky z-40 top-0 w-full border-b bg-background">
       <div className="flex h-16 items-center justify-between px-4 md:px-6">
@@ -252,6 +259,7 @@ function ShoppingHeader() {
             <HeaderRightContent closeSheet={closeSheet} />
           </SheetContent>
         </Sheet>
+        </div>
         <div className="hidden lg:block">
           <MenuItems closeSheet={closeSheet} />
         </div>
@@ -261,7 +269,7 @@ function ShoppingHeader() {
         </div>
      
       </div>
-      </div>
+      
     </header>
   );
 }

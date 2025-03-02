@@ -7,7 +7,7 @@ const verifyExistence = async (req, res) => {
     // console.log("veri",req.params)//inspect
     const product = await Product.findById(productId);
     if (!product)
-      return res.status(409).json({
+      return res.status(408).json({
         success: false,
         message: "Product not found!",
       });
@@ -209,7 +209,7 @@ const deleteCartItem = async (req, res) => {
     });
 
     if (!cart) {
-      return res.status(409).json({
+      return res.status(4010).json({
         success: false,
         message: "Cart not found!",
       });

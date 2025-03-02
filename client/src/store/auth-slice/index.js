@@ -43,6 +43,7 @@ export const registerUser = createAsyncThunk(
 export const loginUser = createAsyncThunk(
   "/auth/login",
   async (formData, { dispatch }) => {
+    console.log(formData)
     // Add `{ dispatch }` to access the dispatch method
     const response = await axios.post(
       `${import.meta.env.VITE_API_URL}/api/auth/login`,

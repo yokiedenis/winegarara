@@ -8,7 +8,7 @@ import img2 from "@/assets/transperant.png";
 import img4 from "@/assets/logo.png";
 function AuthLayout() {
   return (
-    <div className="flex bg-black min-h-screen w-full">
+    <div className="flex bg-black">
       {/* Left Side (Welcome Section) */}
       <div className="obsolute left-0  bg-black w-1/2">
         <div className="max-w-md h-80vh  space-y-6 animate">
@@ -18,14 +18,14 @@ function AuthLayout() {
       </div>
 
       {/* Right Side (Form Section) */}
-      <div className="flex flex-1 items-center  w-full">
+      <div className="flex flex-1  w-full">
         
         {/* Entry Component with Tabs for Login and Signup */}
         <div className="form-container">
         
           <div className="tabs-container">
 
-          <img src={img2} className="h-20vh w-20vw imagex" />
+          <img src={img4} className=" imagex" />
 
           <img src={img3} className="h-full absolute " />
             <Tabs

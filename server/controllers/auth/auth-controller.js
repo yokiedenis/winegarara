@@ -9,7 +9,7 @@ const express = require("express");
 //register
 const registerUser = async (req, res) => {
   const { userName, email, password } = req.body;
-  // console.log("req.bodyreg",req.body)
+  console.log("req.bodyreg",req.body)
   try {
     const checkUser = await User.findOne({ email });
     if (checkUser)
@@ -61,9 +61,12 @@ const registerUser = async (req, res) => {
 //login
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
-// console.log("req.body",req.body)
+console.log("req.body",req.body)
   try {
-    const checkUser = await User.findOne({ email });
+    const normalizedEmail = email.trim().toLowerCase();
+    console.log("check",normalizedEmail)
+const checkUser = await User.findOne({ email: normalizedEmail });
+    console.log("check",checkUser)
     if (!checkUser)
       return res.json({
         success: false,
@@ -74,6 +77,7 @@ const loginUser = async (req, res) => {
       password,
       checkUser.password
     );
+    console.log("checkp",checkPasswordMatch)
     if (!checkPasswordMatch)
       return res.json({
         success: false,

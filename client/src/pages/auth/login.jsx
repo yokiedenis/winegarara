@@ -10,8 +10,8 @@ const AuthLogin = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { toast } = useToast();
-
-  const hearticon = () => "⌠ʽ⏑ʼ⌡^_~☾☉☉☽🍫🍰";
+  const [form] = Form.useForm();
+  const hearticon = () => "⌠ʽ⏑ʼ⌡^_~🍫🍰";
   const lunalicon = () => "🂡🍷🍹🥃😊❣️@_mail.com";
   const liuIcon = [
     {
@@ -24,8 +24,10 @@ const AuthLogin = () => {
     },
   ];
 
-  const onFinish = (values) => {
-    dispatch(loginUser(values)).then((data) => {
+  const onFinish = (formData) => {
+    console.log("Form Data:", formData);
+    dispatch(loginUser(formData)).then((data) => {
+      console.log(data)
       if (data?.payload?.success) {
         toast({
           title: data?.payload?.message,
@@ -42,18 +44,8 @@ const AuthLogin = () => {
   };
 
   return (
-    <Form onFinish={onFinish} layout="vertical" className="form">
-      <Form.Item
-        name="email"
-        label="Email"
-        rules={[
-          { type: "email", message: "Invalid email address" },
-          { required: true, message: "Please input your email!" },
-        ]}
-        className="form-item"
-      >
-        <Input placeholder="Email" size="large" />
-        <div>
+    <Form form={form} onFinish={onFinish} layout="vertical" className="form">
+       <div>
           {lunaicon.map((categoryItem) => (
             <Card>
               <CardContent>
@@ -62,15 +54,20 @@ const AuthLogin = () => {
             </Card>
           ))}
         </div>
-      </Form.Item>
-
       <Form.Item
-        name="password"
-        label="Password"
-        rules={[{ required: true, message: "Please input your password!" }]}
+        name="email"
+        label="Email"
+        placeholder= "Enter your email"
+        rules={[
+          { required: true, message: "Email is required" },
+          { type: "email", message: "Invalid Email" }
+        ]}
+        className="form-item"
       >
-        <Input.Password placeholder="Password" size="large" />
-        <div className="z-[-20]">
+        <Input placeholder="Email" />
+        </Form.Item>
+       
+        <div>
           {liuIcon.map((categoryItem) => (
             <Card>
               <CardContent>
@@ -79,7 +76,19 @@ const AuthLogin = () => {
             </Card>
           ))}
         </div>
-      </Form.Item>
+
+      <Form.Item
+        name="password"
+        label="Password"
+        rules={[
+          { required: true, message: "password is required" }
+      ]}
+      className="form-item"
+      >
+        <Input.Password placeholder="Password" size="large" />
+        </Form.Item>
+       
+      
 
       <Button
         htmlType="submit"

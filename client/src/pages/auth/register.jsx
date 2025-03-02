@@ -1,11 +1,12 @@
 import { Form, Button, Input } from "antd";
 import { useDispatch} from "react-redux";
-
-
+import { registerUser } from "@/store/auth-slice";
+import { useToast } from "@/components/ui/use-toast";
 
 export const Signup = () => {
     const dispatch = useDispatch();
     const [form] = Form.useForm();
+    const { toast } = useToast();
     const onFinish = (formData) => {
         dispatch(registerUser(formData)).then((data) => {
             if (data?.payload?.success) {
@@ -27,10 +28,11 @@ export const Signup = () => {
             <Form.Item
                 name="email"
                 label="Email"
-                 placeholder= "Enter your email"
+                placeholder= "Enter your email"
                 rules={[
-                    { type: "email", message: "Invalid Email" },
-                    { required: true, message: "Email is required" }
+                    { required: true, message: "Email is required" },
+                    { type: "email", message: "Invalid Email" }
+                    
                 ]}
                 className="form-item"
             >
@@ -38,7 +40,7 @@ export const Signup = () => {
                 <Input placeholder="Email" />
             </Form.Item>
             <Form.Item
-                name="name"
+                name="userName"
                 label="Username"
                 placeholder= "Enter your username"
                 rules={[
