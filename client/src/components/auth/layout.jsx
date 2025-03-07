@@ -5,7 +5,7 @@ import "../../entry.scss"; // Import your SCSS file for styling
 import img from "@/assets/test4.png";
 import img3 from "@/assets/background.png";
 import img2 from "@/assets/transperant.png";
-import img4 from "@/assets/logo.png";
+import img4 from "@/assets/KIM LIQUORS LTD .png";
 function AuthLayout() {
   return (
     <div className="flex bg-black">

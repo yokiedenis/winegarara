@@ -24,7 +24,7 @@ import UserCartWrapper from "./cart-wrapper";
 import { useEffect, useState } from "react";
 import { fetchCartItems } from "@/store/shop/cart-slice";
 import { Label } from "../ui/label";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/KIM LIQUORS LTD .png";
 
 function MenuItems({ closeSheet }) {
   const navigate = useNavigate();

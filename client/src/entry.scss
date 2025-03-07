@@ -20,7 +20,7 @@ position: relative;
     height: 100vh;
     }
     .imagex{
-      height: 150px;
+      height: 180px;
       width: 380px;
       margin-bottom: 20px;
       padding: 0px;
@@ -54,11 +54,10 @@ position: relative;
 /* Override Ant Design Tabs color */
 
 
-.ant-tabs-tab-active {
-  color:  #7A1A25; /* Change active tab text color */
+.ant-tabs-nav-list{
+  padding-left: 10px;
 }
-
-.ant-tabs-tab {
+.ant-tabs-tab-nav{
   color: #7A1A25; /* Change tab text color */
 }
 

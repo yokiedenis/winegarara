@@ -11,18 +11,9 @@ const AuthLogin = () => {
   const dispatch = useDispatch();
   const { toast } = useToast();
   const [form] = Form.useForm();
-  const hearticon = () => "⌠ʽ⏑ʼ⌡^_~🍫🍰";
-  const lunalicon = () => "🂡🍷🍹🥃😊❣️@_mail.com";
-  const liuIcon = [
-    {
-      icon: hearticon,
-    },
-  ];
-  const lunaicon = [
-    {
-      icon: lunalicon,
-    },
-  ];
+
+
+
 
   const onFinish = (formData) => {
     console.log("Form Data:", formData);
@@ -45,18 +36,10 @@ const AuthLogin = () => {
 
   return (
     <Form form={form} onFinish={onFinish} layout="vertical" className="form">
-       <div>
-          {lunaicon.map((categoryItem) => (
-            <Card>
-              <CardContent>
-                <categoryItem.icon className="w-10 h-10  text-primary" />
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+   
       <Form.Item
         name="email"
-        label="Email"
+        label="Email🂡🍷🍹🥃😊❣️"
         placeholder= "Enter your email"
         rules={[
           { required: true, message: "Email is required" },
@@ -67,19 +50,11 @@ const AuthLogin = () => {
         <Input placeholder="Email" />
         </Form.Item>
        
-        <div>
-          {liuIcon.map((categoryItem) => (
-            <Card>
-              <CardContent>
-                <categoryItem.icon className="w-10 h-10  text-primary" />
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+         
 
       <Form.Item
         name="password"
-        label="Password"
+        label="Password⌠ʽ⏑ʼ⌡^_~"
         rules={[
           { required: true, message: "password is required" }
       ]}
