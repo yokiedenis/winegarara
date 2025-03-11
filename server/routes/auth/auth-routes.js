@@ -4,12 +4,13 @@ const {
   loginUser,
   logoutUser,
   authMiddleware,
+  forgotPassword,
+
 } = require("../../controllers/auth/auth-controller");
 const isAuth=require("../../server")
 const router = express.Router();
 
-
-
+router.post("/forgotPassword",forgotPassword)
 router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.post("/logout", logoutUser);

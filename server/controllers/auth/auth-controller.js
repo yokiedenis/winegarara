@@ -5,7 +5,8 @@ const User = require("../../models/User");
 const session = require("express-session")
 const mongoDbsession = require("connect-mongodb-session")(session)
 const express = require("express");
-
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
 //register
 const registerUser = async (req, res) => {
   const { userName, email, password } = req.body;
@@ -206,4 +207,119 @@ const authMiddleware = async (req, res, next) => {
 };
 
 
-module.exports = { registerUser, loginUser, logoutUser, authMiddleware };
+// Forgot Password
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const normalizedEmail = email.trim().toLowerCase();
+    const user = await User.findOne({ email: normalizedEmail });
+
+    // Prevent email enumeration
+    if (!user) {
+      return res.status(200).json({
+        success: true,
+        message: "If that email is registered, a reset link will be sent.",
+      });
+    }
+
+    // Generate and hash token
+    const token = crypto.randomBytes(20).toString('hex');
+    const hashedToken = await bcrypt.hash(token, parseInt(process.env.SALT));
+    user.resetPasswordToken = hashedToken;
+    user.resetPasswordExpires = Date.now() + 900000; // 15 minutes
+    await user.save();
+
+    // Create reset URL
+    const resetUrl = `${process.env.VITE_API_URL}/reset-password?token=${token}&email=${encodeURIComponent(normalizedEmail)}`;
+    
+    // Configure email transporter
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+    });
+
+    // Send email
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: normalizedEmail,
+      subject: 'Password Reset Request',
+      html: `
+        <p>You requested a password reset. Click the link below to reset your password:</p>
+        <a href="${resetUrl}">Reset Password</a>
+        <p>This link expires in 15 minutes.</p>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({
+      success: true,
+      message: "Password reset email sent.",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Error processing your request.",
+    });
+  }
+};
+
+
+// Reset Password
+const resetPassword = async (req, res) => {
+  const { email, token, newPassword } = req.body;
+  try {
+    const normalizedEmail = email.trim().toLowerCase();
+    const user = await User.findOne({ email: normalizedEmail });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+
+    // Validate token and expiry
+    if (
+      !user.resetPasswordToken ||
+      !user.resetPasswordExpires ||
+      Date.now() > user.resetPasswordExpires
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid or expired token.",
+      });
+    }
+
+    // Verify token
+    const isValid = await bcrypt.compare(token, user.resetPasswordToken);
+    if (!isValid) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid token.",
+      });
+    }
+
+    // Update password and clear reset fields
+    user.password = await bcrypt.hash(newPassword, parseInt(process.env.SALT));
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Password reset successful.",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Error resetting password.",
+    });
+  }
+};
+
+module.exports = {resetPassword, forgotPassword,registerUser, loginUser, logoutUser, authMiddleware };
