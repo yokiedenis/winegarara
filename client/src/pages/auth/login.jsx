@@ -74,6 +74,9 @@ const AuthLogin = () => {
       >
         Login
       </Button>
+      <div style={{ marginTop: "16px", textAlign: "center" }}>
+            <Link to="/forgot-password">Forgot Password?</Link>
+          </div>
     </Form>
   );
 };

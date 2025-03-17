@@ -22,6 +22,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import PaypalReturnPage from "./pages/shopping-view/paypal-return";
 import PaymentSuccessPage from "./pages/shopping-view/payment-success";
 import SearchProducts from "./pages/shopping-view/search";
+import ForgotPassword from './components/auth/forgotPassword';
+import ResetPassword from './components/auth/resetPassword';
 
 function App() {
   const { user, isAuthenticated, isLoading } = useSelector(
@@ -42,6 +44,7 @@ function App() {
     <div className="flex flex-col overflow-hidden bg-white">
       <Routes>
         <Route path="/" element={<Navigate to="/shop/home" replace />} />
+        <Route path="/resetPassword" element={<Navigate to="/login" replace />} />
         <Route path="/shop" element={<ShoppingLayout />}>
           <Route path="home" element={<ShoppingHome />} />
           <Route path="listing" element={<ShoppingListing />} />
@@ -84,6 +87,8 @@ function App() {
           <Route path="paypal-return" element={<PaypalReturnPage />} />
           <Route path="payment-success" element={<PaymentSuccessPage />} />
         </Route>
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/unauth-page" element={<UnauthPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
