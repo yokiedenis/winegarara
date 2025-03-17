@@ -171,6 +171,7 @@ function ShoppingHeader() {
   const [openCartSheet, setOpenCartSheet] = useState(false);
   const { cartItems } = useSelector((state) => state.shopCart);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   function handleLogout() {
     //for secure
     // dispatch(logoutUser());
