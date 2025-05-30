@@ -1,13 +1,60 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="./src/assets/KIM LIQUORS LTD .png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>wine garage mbale</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="./src/assets/KIM LIQUORS LTD .png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>wine garage mbale</title>
+  <script type="text/javascript"
+    src="https://winemechanic-01971b39-5aed-7651-9b6f-5b695e75e868.netlify.app/webchat.botonic.js"></script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <div id="botonic-root"></div>
+
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        const logoUrl = 'https://yokiedenis.github.io/gify/redwinegif.gif'; 
+        const mecUrl="https://yokiedenis.github.io/gify/mec.gif";
+        const launcherIcon="https://yokiedenis.github.io/gify/chat.gif"
+      Botonic.render(document.getElementById('botonic-root'), {
+        appId: '01971bb5-ae35-7773-bd71-f778b2bec8d1',
+        visibility: 'dynamic',
+        theme: {
+          brand: {
+          image: mecUrl,
+          color:"black"
+          }, 
+          fontFamily: 'Arial, sans-serif',
+          userMessageBackground: '#000000',
+          userMessageTextColor: '#ffffff',
+          linkColor: '#4d9eff',
+          borderRadius: '8px',
+          animations: {
+            enable: false,
+          },
+
+        header: {
+      title: 'The Mechanic',
+      subtitle: 'text hi to start engine',
+      image: logoUrl,
+    },  triggerButton: {
+      image: launcherIcon,
+      style: {
+        width: '80px',
+        height:"80px",
+        background:"transparent"
+      },
+      // custom: CustomTrigger,
+    },
+        },
+      });
+    });
+  </script>
+
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
 </html>
